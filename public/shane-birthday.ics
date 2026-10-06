@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Shane Birthday//Invitation//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:shane-fifth-birthday-2026@invitation
+DTSTAMP:20261006T000000Z
+SEQUENCE:1
+DTSTART:20261121T203000Z
+SUMMARY:Shane's 5th Birthday
+LOCATION:Guyana Marriott Hotel Georgetown
+DESCRIPTION:Birthday celebration at 4:30 PM in Georgetown\, Guyana (UTC-04:
+ 00). End time has not been specified.
+END:VEVENT
+END:VCALENDAR
