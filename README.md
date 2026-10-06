@@ -23,10 +23,10 @@ The project uses lightweight, dependency-free HTML, CSS and JavaScript. The stat
 
 ## Vercel
 
-Import this folder as a new Vercel project (or run the Vercel CLI from this folder).
+This folder belongs to the existing `irfanimran122021-lab/shane-5th-birthday` repository. Push tested updates to its `main` branch to trigger the connected Vercel project; do not create a replacement project.
 Use framework preset **Other**, build command **npm run build**, and output directory **dist**. These defaults are already in `vercel.json`. Deploy the generated website, not the source folder as an unbuilt static site.
 
-The project is ready to deploy but has not been published to a Vercel account.
+Keep the existing Vercel project and deployment settings.
 
 ## RSVP demo and connection
 
@@ -60,7 +60,15 @@ Declines use zero for all guest counts. The guest count supports up to 50 adults
 - `public/assets/`: optimized artwork, locally hosted fonts and font licenses.
 - `tests/event.test.mjs`: date/time, countdown and RSVP behavior checks.
 
-The countdown uses November 20, 2026, 4:30 PM in Georgetown (UTC−04:00). It stops at zero when the celebration begins.
+The countdown uses November 21, 2026, 4:30 PM in Georgetown (UTC−04:00). It stops at zero when the celebration begins.
+
+## Save the Date
+
+The button beside Directions opens keyboard-accessible calendar choices in the existing blue-and-gold palette. Google Calendar opens a prefilled event for review. Apple/iPhone, Outlook and other calendar apps use `public/shane-birthday.ics`. Its UTC start is November 21, 2026 at 20:30Z, equivalent to 4:30 PM in Georgetown. The exact existing Marriott venue is retained.
+
+No end time was supplied. The ICS deliberately omits DTEND and DURATION; Google's required range uses matching start/end instants, with a note to review any end suggested by the calendar app. `public/calendar.js` builds both options from the event configuration. The production build regenerates the ICS in `dist`; tests verify the checked-in download stays synchronized. After changing event configuration, regenerate the source download from `calendarEvent()` as well.
+
+The date/calendar update passes all 11 automated tests and the production build. Browser checks cover the opening, date display, calendar panel/download, Directions, RSVP controls and mobile layouts at 360 and 390 pixels. Calendar import was checked as a downloaded file, not saved into a guest's personal calendar account.
 
 ## Accessibility and browser behavior
 
