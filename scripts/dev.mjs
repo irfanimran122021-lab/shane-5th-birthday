@@ -3,6 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 const root = resolve(process.argv.includes('--production') ? 'dist' : 'public');
 const types = { '.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'text/javascript', '.svg':'image/svg+xml', '.webp':'image/webp', '.png':'image/png', '.woff2':'font/woff2', '.json':'application/json' };
+types['.ics']='text/calendar; charset=utf-8';
 const port = Number(process.env.PORT || 4173);
 createServer(async (req, res) => {
   try {
