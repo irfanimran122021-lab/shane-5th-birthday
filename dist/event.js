@@ -1,7 +1,7 @@
 export const EVENT = Object.freeze({
   name: 'Shane',
   age: 5,
-  startsAt: '2026-11-20T16:30:00-04:00',
+  startsAt: '2026-11-21T16:30:00-04:00',
   timeZone: 'America/Guyana',
   venue: 'Guyana Marriott Hotel Georgetown',
   mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Guyana%20Marriott%20Hotel%20Georgetown',

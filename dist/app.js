@@ -1,4 +1,5 @@
 import { EVENT, countdownParts, validateRSVP } from './event.js';
+import { googleCalendarUrl } from './calendar.js';
 import { submitRSVP, isDemo } from './rsvp-service.js';
 const stars = document.querySelector('#stars');
 for(let i=0;i<35;i++){const s=document.createElement('span');s.className='star';s.textContent=i%5===0?'✧':'·';s.style.cssText='left:'+((i*37.3)%100)+'%;top:'+((i*23.7)%100)+'%;--speed:'+(3+i%5)+'s;--delay:-'+i%7+'s';stars.append(s);}
@@ -18,13 +19,13 @@ function animals(extra=''){return '<div class="animal-art '+extra+'"><img src=".
 main.innerHTML = `
   <nav class="nav" aria-label="Celebration navigation"><a href="#invitation" class="wordmark" aria-label="Shane's invitation">Shane <span>IS FIVE</span></a><div class="nav-links"><a href="#details">The celebration</a><a href="#dress">Dress code</a><a href="#rsvp" class="nav-rsvp">RSVP ${icon('arrow')}</a></div></nav>
   <section class="invitation-section" id="invitation" aria-labelledby="invite-title">
-    <div class="card-topline"><span>AN AFTERNOON OF WONDER</span><span>20 · 11 · 2026</span></div>
+    <div class="card-topline"><span>AN AFTERNOON OF WONDER</span><span>21 · 11 · 2026</span></div>
     <div class="invitation-paper">
       <div class="paper-corner corner-tl" aria-hidden="true"></div><div class="paper-corner corner-tr" aria-hidden="true"></div><div class="paper-corner corner-bl" aria-hidden="true"></div><div class="paper-corner corner-br" aria-hidden="true"></div>
       <div class="paper-heading"><div class="tiny-crown">${icon('crown')}</div><p class="eyebrow">YOU’RE CORDIALLY INVITED</p><h1 id="invite-title" tabindex="-1">Shane</h1><p class="turning">is turning <span>FIVE!</span></p></div>
       <div class="hero-center"><span class="hero-star star-left" aria-hidden="true">✧</span><span class="hero-five" aria-hidden="true">5</span><span class="hero-star star-right" aria-hidden="true">✦</span></div>
       <p class="hero-message">Five years of smiles, laughter and adventure<br class="desktop-break"> deserve a celebration to remember.</p>
-      <div class="invite-date"><span>FRIDAY</span><strong>20 <i>/</i> 11 <i>/</i> 2026</strong><span>4:30 PM · GUYANA</span></div>
+      <div class="invite-date"><span>SATURDAY</span><strong>21 <i>/</i> 11 <i>/</i> 2026</strong><span>4:30 PM · GUYANA</span></div>
       <p class="invite-venue">Guyana Marriott Hotel Georgetown</p>
       <a class="button button-navy" href="#details">View celebration ${icon('arrow')}</a>
       ${animals('hero-animals')}
@@ -35,11 +36,18 @@ main.innerHTML = `
   <section class="details section-shell reveal" id="details" aria-labelledby="details-title">
     <div class="section-heading"><p class="eyebrow">SAVE THE DATE</p><h2 id="details-title">A grand day for<br>a <em>little gentleman.</em></h2><p>Join us for a magical afternoon of laughter,<br>beautiful memories and birthday fun.</p></div>
     <div class="detail-grid">
-      <article class="detail-item"><div class="detail-icon">${icon('calendar')}</div><p class="eyebrow">THE DATE</p><h3>November 20, 2026</h3><p>Friday, a day for making memories</p></article>
+      <article class="detail-item"><div class="detail-icon">${icon('calendar')}</div><p class="eyebrow">THE DATE</p><h3>November 21, 2026</h3><p>Saturday, a day for making memories</p></article>
       <article class="detail-item"><div class="detail-icon">${icon('clock')}</div><p class="eyebrow">THE TIME</p><h3>4:30 PM</h3><p>Let the birthday adventure begin</p></article>
       <article class="detail-item"><div class="detail-icon">${icon('pin')}</div><p class="eyebrow">THE PLACE</p><h3>Guyana Marriott Hotel</h3><p>Georgetown, Guyana</p></article>
     </div>
-    <a class="button button-outline" href="${EVENT.mapsUrl}" target="_blank" rel="noopener noreferrer">Get directions ${icon('arrow')}</a>
+    <div class="event-actions"><a class="button button-outline" href="${EVENT.mapsUrl}" target="_blank" rel="noopener noreferrer">Get directions ${icon('arrow')}</a><button type="button" class="button button-outline" id="save-date" aria-haspopup="dialog">Save the Date ${icon('calendar')}</button></div>
+    <dialog class="calendar-dialog" id="calendar-dialog" aria-labelledby="calendar-title" aria-describedby="calendar-note">
+      <button class="calendar-close" type="button" aria-label="Close calendar options">×</button>
+      <p class="eyebrow">A LITTLE DATE TO REMEMBER</p><h2 id="calendar-title">Save the <em>date.</em></h2>
+      <p>Shane’s 5th Birthday<br>November 21, 2026 · 4:30 PM<br>${EVENT.venue}</p>
+      <div class="calendar-options"><a class="button button-outline" href="${googleCalendarUrl()}" target="_blank" rel="noopener noreferrer">Google Calendar ${icon('arrow')}</a><a class="button button-outline" href="./shane-birthday.ics" download="shane-5th-birthday.ics">Apple / iPhone ${icon('calendar')}</a><a class="button button-outline" href="./shane-birthday.ics" download="shane-5th-birthday.ics">Outlook / other apps ${icon('calendar')}</a></div>
+      <p class="calendar-note" id="calendar-note">Georgetown, Guyana · UTC−04:00<br>No end time has been announced. Review the event before saving. For Apple or Outlook, open the downloaded calendar file to add it.</p>
+    </dialog>
     ${ornament()}
   </section>
   <section class="dress reveal" id="dress" aria-labelledby="dress-title">
@@ -57,9 +65,16 @@ main.innerHTML = `
       <p class="demo-note" id="demo-note" ${isDemo?'':'hidden'}>RSVP preview · Replies aren’t sent to the family yet.</p>
     </form><div id="rsvp-confirmation" class="confirmation" role="status" tabindex="-1" hidden><div class="confirmation-stars" aria-hidden="true">✧　✦　✧</div><div class="confirmation-heart">${icon('heart')}</div><h3>Thank You! 💙</h3><p id="confirmation-message"></p><p class="demo-note" id="confirmation-demo"></p><button class="text-button" id="edit-rsvp" type="button">Edit my response ${icon('arrow')}</button><div id="rsvp-particles" class="opening-particles" aria-hidden="true"></div></div></div>
   </section>
-  <section class="countdown-section reveal" aria-labelledby="countdown-title"><p class="eyebrow">EVERY MOMENT BRINGS US CLOSER</p><h2 id="countdown-title">The countdown to <em>FIVE</em> is on!</h2><div class="countdown" role="timer" aria-label="Time until Shane’s birthday celebration">${['days','hours','minutes','seconds'].map(unit=>'<div class="count-unit"><span class="count-number" id="count-'+unit+'">00</span><span class="count-label">'+unit+'</span></div>').join('')}</div><p class="countdown-date" id="countdown-caption">NOVEMBER 20, 2026 · 4:30 PM · GEORGETOWN</p></section>
-  <footer class="final-message reveal">${ornament()}<p class="eyebrow">LET’S MAKE A LITTLE MAGIC</p><h2>A little gentleman<br>is turning <em>five.</em></h2><p>Come celebrate a magical afternoon filled<br>with laughter, memories and birthday fun.</p>${animals('footer-animals')}<p class="with-love">With love,</p><p class="signature">Shane <span>&</span> Family</p><div class="footer-bottom"><span>20 NOVEMBER 2026</span><button id="replay" type="button">Open the magic again <span>↗</span></button><span>MADE WITH LOVE, FOR SHANE</span></div></footer>
+  <section class="countdown-section reveal" aria-labelledby="countdown-title"><p class="eyebrow">EVERY MOMENT BRINGS US CLOSER</p><h2 id="countdown-title">The countdown to <em>FIVE</em> is on!</h2><div class="countdown" role="timer" aria-label="Time until Shane’s birthday celebration">${['days','hours','minutes','seconds'].map(unit=>'<div class="count-unit"><span class="count-number" id="count-'+unit+'">00</span><span class="count-label">'+unit+'</span></div>').join('')}</div><p class="countdown-date" id="countdown-caption">NOVEMBER 21, 2026 · 4:30 PM · GEORGETOWN</p></section>
+  <footer class="final-message reveal">${ornament()}<p class="eyebrow">LET’S MAKE A LITTLE MAGIC</p><h2>A little gentleman<br>is turning <em>five.</em></h2><p>Come celebrate a magical afternoon filled<br>with laughter, memories and birthday fun.</p>${animals('footer-animals')}<p class="with-love">With love,</p><p class="signature">Shane <span>&</span> Family</p><div class="footer-bottom"><span>21 NOVEMBER 2026</span><button id="replay" type="button">Open the magic again <span>↗</span></button><span>MADE WITH LOVE, FOR SHANE</span></div></footer>
 `;
+
+const calendarDialog=document.querySelector('#calendar-dialog');
+const saveDate=document.querySelector('#save-date');
+saveDate.addEventListener('click',()=>calendarDialog.showModal());
+calendarDialog.querySelector('.calendar-close').addEventListener('click',()=>calendarDialog.close());
+calendarDialog.addEventListener('click',event=>{if(event.target===calendarDialog){const rect=calendarDialog.getBoundingClientRect();if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)calendarDialog.close();}});
+calendarDialog.addEventListener('close',()=>saveDate.focus({preventScroll:true}));
 
 function burst(container, count=20) {
   if(reducedMotion.matches) return;
